@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Driver;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Review;
+
 use Illuminate\Support\Facades\Auth;
 
 class DriverController extends Controller
@@ -43,7 +46,16 @@ if($user){
     return view('passenger/reservation',compact('drivers','profile'));
     
     }
+    public function showProfile()
+    {
+        $profile = User::where('id', auth()->id())->get();
+        $reviews=Review::with('driver')->where('id', auth()->id())->get();
+        // $reviews = Review::with('user')->where('driver_id', Auth::id())->get();
 
+dd($reviews);
+
+        return view('driver/profile', compact('profile','reviews'));
+    }
 
 
     

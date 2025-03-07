@@ -83,6 +83,10 @@
                     </svg>
                     Disponibilité
                 </a>
+                <a href="{{route('showProfile')}}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg {{ request()->is('driver/availability*') ? 'bg-blue-50 text-blue-600' : '' }}">
+                    <img src="{{asset('storage/'.$profile[0]->profile_picture)}}" alt="Driver" class=" mr-4 w-10 h-10 rounded-full">
+                    Profile
+                </a>
             </nav>
 
             <!-- Driver Profile -->

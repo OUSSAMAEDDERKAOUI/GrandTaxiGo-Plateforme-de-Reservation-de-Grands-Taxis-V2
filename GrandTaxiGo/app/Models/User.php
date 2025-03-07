@@ -28,6 +28,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function reviews(){
+        return $this->hasMany(Review::class,'driver_id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

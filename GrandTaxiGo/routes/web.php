@@ -43,8 +43,11 @@ Route::middleware(['role:driver'])->group(function () {
 
 
 
-
 });
+
+Route::get('driver/profile',[DriverController::class,'showProfile'])->name('showProfile');
+
+
 
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
