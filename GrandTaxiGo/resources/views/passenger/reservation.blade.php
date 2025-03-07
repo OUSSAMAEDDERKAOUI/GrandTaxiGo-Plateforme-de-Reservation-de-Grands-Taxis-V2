@@ -106,19 +106,25 @@
     @endsection
 
     <script>
-    const closeButtons = document.querySelectorAll('.close_model, #close_reservation');
-    closeButtons.forEach(button => {
-        button.onclick = function() {
-            document.getElementById('bookingModal').classList.add('hidden');
-        };
-    });
-    
-    document.querySelectorAll('.openReservationModal').forEach(btn => {
-        btn.onclick = function() {
-            document.getElementById('bookingModal').classList.remove('hidden');
-            document.getElementById('id_driver').value = btn.dataset.driver;
-        };
-    });
+        window.addEventListener("load", (event) => {
+            const closeButtons = document.querySelectorAll('.close_model, #close_reservation');
+            closeButtons.forEach(button => {
+                button.onclick = function() {
+                    document.getElementById('bookingModal').classList.add('hidden');
+                };
+            });
+            console.log(document.querySelectorAll('.openReservationModal'))
+            document.querySelectorAll('.openReservationModal').forEach(btn => {
+        
+                btn.onclick = function() {
+                    console.log('ahmed');
+                    document.getElementById('bookingModal').classList.remove('hidden');
+        
+                    document.getElementById('id_driver').value = btn.dataset.driver;
+        
+                };
+            });
+        })
     </script>
     
 </body>

@@ -54,7 +54,7 @@ class RegisteredUserController extends Controller
     
         // Send the login notification email to the newly created user
         // Mail::to($user->email)->send(new LoginNotificationMail($user));
-        Mail::to($user->email)->send(new UserInfoQRMail($user));
+        // Mail::to($user->email)->send(new UserInfoQRMail($user));
 
         // Handle role-based redirection
         if ($request->role == 'passenger') {

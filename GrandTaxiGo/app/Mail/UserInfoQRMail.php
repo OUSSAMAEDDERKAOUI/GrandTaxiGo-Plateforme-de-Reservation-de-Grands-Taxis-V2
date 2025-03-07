@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Announcement;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,16 +20,16 @@ class UserInfoQRMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public $Announcement;
 
     /**
      * Create a new message instance.
      *
-     * @param User $user
+     * @param Announcement $Announcement
      */
-    public function __construct(User $user)
+    public function __construct(Announcement $Announcement)
     {
-        $this->user = $user;
+        $this->Announcement = $Announcement;
     }
 
     /**
@@ -38,7 +39,7 @@ class UserInfoQRMail extends Mailable
      */
     public function build()
     {
-        $qrData = "Nom: {$this->user->f_name} {$this->user->l_name}\n Email: {$this->user->email}\n Location: {$this->user->location}";
+        $qrData = "Point de depart: {$this->Announcement->trip_start}\n Destination: {$this->Announcement->trip_end}\n  Nombre de personnes: {$this->Announcement->max_passengers}  \n Date de depart : {$this->Announcement->departure_date}" ;
         
         $qrCode = new QrCode($qrData);
         
@@ -47,7 +48,7 @@ class UserInfoQRMail extends Mailable
         $qrImageData = $writer->write($qrCode);
 
         
-        $qrFilePath = storage_path('app/public/qrcodes/user_' . $this->user->id . '_qr.png');
+        $qrFilePath = storage_path('app/public/qrcodes/user_' . $this->Announcement->id . '_qr.png');
 
         $directory = storage_path('app/public/qrcodes');
         // dd($directory);

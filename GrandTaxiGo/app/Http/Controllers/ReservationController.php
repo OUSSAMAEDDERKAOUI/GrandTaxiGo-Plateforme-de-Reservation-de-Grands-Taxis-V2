@@ -12,6 +12,9 @@ use App\Models\User;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LoginNotificationMail;
+use App\Mail\UserInfoQRMail;
 
 class ReservationController extends Controller
 {
@@ -20,7 +23,7 @@ class ReservationController extends Controller
     {
 
 
-        $resservation = Reservation::create([
+        $reservation = Reservation::create([
             'pickup_location' => $request->pickup_location,
             'destination' => $request->destination,
             'status' => 'pending',
@@ -30,6 +33,13 @@ class ReservationController extends Controller
             'driver_id' => $request->driver_id,
             'announcement_id' => $request->announcement_id ?? null,
         ]);
+
+        if($request->announcement_id){
+            $Announcement = Announcement::with('reservations')->findOrFail($request->announcement_id);
+            Mail::to(auth()->user()->email)->send(new UserInfoQRMail($Announcement));
+        }
+      
+
         return redirect()->route('passenger.announcements')->with('success', 'Réservation créée avec succès.');
     }
 
@@ -82,11 +92,11 @@ class ReservationController extends Controller
         $reservation = Reservation::with('Announcement')->findOrFail($id);
         $now = Carbon::now();
         if ($reservation->announcement && $reservation->announcement->departure_date) {
-            if ($now > ($reservation->Announcement->departure_date)) {
+            if ($now < ($reservation->Announcement->departure_date)) {
 
                 return redirect()->back()->with('error', "Vous ne pouvez pas marquer cette réservation comme complétée, l'heure de départ est dans le futur.");
             }
-        } elseif ($now > ($reservation->departure_time)) {
+        } elseif ($now < ($reservation->departure_time)) {
 
             return redirect()->back()->with('error', "Vous ne pouvez pas marquer cette réservation comme complétée, l'heure de départ est dans le futur.");
         }
@@ -99,13 +109,13 @@ class ReservationController extends Controller
         $reservation = Reservation::findOrFail($id);
         $reservation->update(['status' => 'rejected']);
 
-        return redirect()->route('driver.announcements')->with('status', 'Réservation refusée.');
+        return redirect()->route('driver.trips')->with('erreur', 'Réservation refusée.');
     }
 
 
     public function showPassengerReservations()
     {
-        $reservations = Reservation::with('Announcement')->where('passenger_id', Auth::id())->get();
+        $reservations = Reservation::with('Announcement')->where('passenger_id', Auth::id())->simplePaginate(6);
         $profile = user::where('id', auth()->id())->get();
 
         return view('passenger.trips', compact('reservations', 'profile'));
@@ -114,7 +124,7 @@ class ReservationController extends Controller
     public function showDriverReservations()
     {
 
-        $reservations = Reservation::with('Passenger', 'Announcement')->where('driver_id', Auth::id())->get();
+        $reservations = Reservation::with('Passenger', 'Announcement')->where('driver_id', Auth::id())->simplePaginate(6);
         $allReservation = Reservation::all()->count();
         $completedReservation = Reservation::where('status', 'completed')->count();
         $rejecteddReservation = Reservation::where('status', 'rejected')->count();

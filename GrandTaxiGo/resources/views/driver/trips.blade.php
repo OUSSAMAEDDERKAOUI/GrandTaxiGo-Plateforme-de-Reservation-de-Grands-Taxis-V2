@@ -216,6 +216,10 @@
                 </tr>
             @endif
             </table>
+            <div class="px-6 py-4">
+                <!-- Affichez les liens de pagination ici -->
+                {{ $reservations->links() }}
+            </div>
             
         </div>
     </div>

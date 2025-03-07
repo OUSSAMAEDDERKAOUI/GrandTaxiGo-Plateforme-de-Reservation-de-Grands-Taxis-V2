@@ -1,13 +1,9 @@
-<!-- resources/views/userInfoQR.blade.php -->
+<!-- resources/views/emails/userInfoQR.blade.php -->
 
 <html>
 <body>
-    <h1>Information utilisateur</h1>
-    <p>Nom: {{ $user->f_name }} {{ $user->l_name }}</p>
-    <p>Email: {{ $user->email }}</p>
-    <p>Location: {{ $user->location }}</p>
-
-    <p>Ci-joint, votre QR Code :</p>
-    <img src="{{ storage_path('app/public/qrcodes/user_' . $user->id . '_qr.png') }}" alt="QR Code">
+    <h1>Bonjour,</h1>
+    <p>Voici votre QR code avec les informations de votre reservation.</p>
+    <p>Vous pouvez scanner ce QR code pour obtenir vos informations.</p>
 </body>
 </html>

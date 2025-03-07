@@ -12,6 +12,8 @@ use App\Models\User;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ReviewController;
+
 
 Route::middleware(['role:passenger'])->group(function () {
     Route::get('/reservations', [ReservationController::class, 'index'])->name('reservations.index');
@@ -20,6 +22,11 @@ Route::middleware(['role:passenger'])->group(function () {
     Route::post('reservations/create', [ReservationController::class, 'create'])->name('reservations.create');
     Route::get('passenger/reservation', [DriverController::class, 'filteredByLocationAndAvailibility'])->name('passenger.filteredDrivers');
     Route::post("/filtered/reservations",[DriverController::class,'filteredByLocationAndAvailibility'])->name('filtered.drivers');
+
+    // Route::get('/review/driver',[ReviewController::class,'index'])->name('showReview');
+    
+
+
 
 });
 Route::middleware(['role:driver'])->group(function () {
@@ -34,7 +41,11 @@ Route::middleware(['role:driver'])->group(function () {
     Route::get('/driver/availability', [DriverController::class, 'index'])->name('availability.index');
     Route::get('/driver/availability',[DriverController::class,'index'])->name('show.availability');
 
+
+
+
 });
+
 Route::middleware(['role:admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::post('/admin/user/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.delete.user');
@@ -78,6 +89,8 @@ Route::post('/payment/process', [PaymentController::class, 'processPayment'])->n
 
 
 
+Route::post('review/post',[ReviewController::class,'store'])->name('storeReview');
 
+Route::get('/review', [ReviewController::class, 'show'])->name('showReview');
 
 Route::get('/send-user-info-qr/{user}', [RegisteredUserController::class, 'storeRegister']);
