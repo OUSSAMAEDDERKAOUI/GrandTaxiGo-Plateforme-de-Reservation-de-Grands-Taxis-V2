@@ -44,7 +44,13 @@ class AdminController extends Controller
         // dd($announcements);
         return view('admin.trajets', compact('announcements'));
     }
-  
+    public function viewReviews()
+    {
+
+        $reviews = Review::with('driver','passenger')->get();
+        // dd($reviews);
+        return view('admin.reviews', compact('reviews'));
+    }
 
 
 
