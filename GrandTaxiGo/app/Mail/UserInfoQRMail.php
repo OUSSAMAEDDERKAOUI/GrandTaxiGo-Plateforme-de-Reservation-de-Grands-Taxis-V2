@@ -51,13 +51,11 @@ class UserInfoQRMail extends Mailable
         $qrFilePath = storage_path('app/public/qrcodes/user_' . $this->Announcement->id . '_qr.png');
 
         $directory = storage_path('app/public/qrcodes');
-        // dd($directory);
         if (!file_exists($directory)) {
             mkdir($directory, 0755, true);
         }
         
         file_put_contents($qrFilePath, $qrImageData->getString());
-        
         return $this->subject('QR Code avec les informations de l\'utilisateur')
                     ->view('userInfoQR') 
                     ->attach($qrFilePath, [
