@@ -85,7 +85,11 @@ class AnnouncementController extends Controller
 
         return view('passenger.announcements',compact('announcements','profile'));
 
+
     }
+
+   
+    
     public function showAllAnnouncements(){
 
         $announcements = Announcement::with('reservations')->where('driver_id', Auth::id())->get();
@@ -94,6 +98,7 @@ class AnnouncementController extends Controller
                 $profile=user::where('id',auth()->id())->get();
 
         return view('driver.announcements',compact('announcements','profile'));
+
 
     }
 

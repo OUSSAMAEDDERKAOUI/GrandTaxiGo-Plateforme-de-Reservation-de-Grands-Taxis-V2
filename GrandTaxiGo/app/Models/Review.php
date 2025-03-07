@@ -16,14 +16,15 @@ class Review extends Model
         'passenger_id',
     ];
   
-    public function driver()
-    {
-        return $this->belongsTo(Driver::class, 'driver_id');
+ 
+
+    public function driver(){
+
+        return $this->belongsTo(User::class,'driver_id');
     }
     public function passenger(){
-        return $this->belongsTo(Passenger::class);
+
+        return $this->belongsTo(User::class,'passenger_id');
     }
-    public function user(){
-        return $this->belongsTo(Driver::class,'id');
-    }
+
 }

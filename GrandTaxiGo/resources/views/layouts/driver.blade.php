@@ -82,22 +82,18 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     Disponibilité
-                </a>
-                <a href="{{route('showProfile')}}" class="flex items-center px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg {{ request()->is('driver/availability*') ? 'bg-blue-50 text-blue-600' : '' }}">
-                    <img src="{{asset('storage/'.$profile[0]->profile_picture)}}" alt="Driver" class=" mr-4 w-10 h-10 rounded-full">
-                    Profile
-                </a>
+              
             </nav>
 
             <!-- Driver Profile -->
             <div class="p-4 border-t">
-                <div class="flex items-center space-x-3">
+                <a href="{{route('showProfile')}}"  class="flex items-center space-x-3">
                     <img src="{{asset('storage/'.$profile[0]->profile_picture)}}" alt="Driver" class="w-10 h-10 rounded-full">
                     <div>
                         <p class="text-sm font-medium text-gray-700">{{$profile[0]->f_name}} {{$profile[0]->l_name}}</p>
                         <p class="text-xs text-gray-500">{{$profile[0]->email}}</p>
                     </div>
-                </div>
+                </a>
                 <div class="mt-4">
                     <form action="{{route("logout")}}" method="POST">
                         @csrf

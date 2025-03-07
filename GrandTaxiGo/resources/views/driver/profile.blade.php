@@ -83,22 +83,42 @@
       </div>
 
       <!-- Avis récents -->
-      <div class="bg-white rounded-lg shadow-lg p-6">
-        <h2 class="text-xl font-semibold mb-4">Avis récents</h2>
-        <div class="space-y-4">
-            @foreach($reviews as $review)
-          <div class="border-b pb-4">
-            <div class="flex items-center mb-2">
-              <span class="text-yellow-400">{{$review->riview}}</span>
-              <span class="ml-2 text-sm text-gray-600">{{\Carbon\Carbon::parse($review->created_at)->format('d-m-y')}}</span>
+      <div class="space-y-4">
+        @if($reviews->isEmpty())
+    <p>Aucun avis disponible.</p>
+@else
+      @foreach($reviews as $review)
+        <div class="bg-white rounded-lg shadow-lg p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+              <!-- Replace the placeholder with the user's actual avatar -->
+              <img class="h-10 w-10 rounded-full" src="{{asset('storage/'.$review->passenger->profile_picture)}}" alt="User Avatar">
+              <div class="ml-4">
+                <h4 class="text-sm font-medium text-gray-900">{{ $review->passenger->f_name }} {{ $review->passenger->l_name }}</h4>
+                <div class="flex items-center">
+                  <!-- Show the actual rating dynamically -->
+                  <span class="text-yellow-400">
+                    @for($i = 0; $i < $review->review; $i++)
+                      ★
+                    @endfor
+                  </span>
+                  <span class="ml-2 text-sm text-gray-500">{{ $review->created_at->diffForHumans() }}</span>
+                </div>
+              </div>
             </div>
-            <p class="text-gray-700">{{$review->comment}}</p>
-            <p class="text-sm text-gray-600 mt-1">- Sarah M.</p>
-          </div>
 
+            <div class="flex space-x-2">
+              
+            </div>
+          </div>
+          
+          <!-- Display the review text -->
+          <p class="text-gray-700">{{ $review->comment}}</p>
         </div>
-        @endforeach
-      </div>
+      @endforeach
+      @endif
+
+    </div>
     </div>
   </div>
 

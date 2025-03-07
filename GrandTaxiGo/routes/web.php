@@ -41,21 +41,27 @@ Route::middleware(['role:driver'])->group(function () {
     Route::get('/driver/availability', [DriverController::class, 'index'])->name('availability.index');
     Route::get('/driver/availability',[DriverController::class,'index'])->name('show.availability');
 
+    Route::get('driver/profile',[DriverController::class,'showProfile'])->name('showProfile');
 
 
 });
 
-Route::get('driver/profile',[DriverController::class,'showProfile'])->name('showProfile');
 
 
 
 Route::middleware(['role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::post('/admin/user/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.delete.user');
+    Route::get('admin/dashboard',[AdminController::class,'showStatistiques'])->name('dashboard');
     Route::get('/admin/users', [AdminController::class, 'viewAllUsers'])->name('admin.view.all.users');
-    Route::get('/admin/statistics', [AdminController::class, 'viewStatistics'])->name('admin.view.statistics');
-    Route::post('/admin/assign-role', [AdminController::class, 'assignRole'])->name('admin.assign.role');
+    Route::post('/admin/user/{id}/delete', [AdminController::class, 'deleteUser'])->name('admin.delete.user');
+
+
+    Route::get('/admin/trajets', [AdminController::class, 'viewTrajets'])->name('admin.view.trajets');
+    Route::get('/admin/reviews', [AdminController::class, 'viewReviews'])->name('admin.view.reviews');
+
+    Route::post('/admin/review/{id}/delete', [AdminController::class,'deleteReview'])->name('delete.review');
+
 });
+
 Route::middleware('guest')->group(function () {
     Route::get('/auth/register', [RegisteredUserController::class, 'showRegister'])->name("showRegister");
     Route::post('/auth/register', [RegisteredUserController::class, 'storeRegister'])->name("storeRegister");
@@ -70,12 +76,12 @@ Route::middleware('auth')->group(function () {
     Route::get('passenger/announcement', [AnnouncementController::class, 'showAllAnnouncementsForPassenger'])->name('passenger.announcements');
     Route::get('/announcements/{announcementId}/reservations', [AnnouncementController::class, 'getReservations'])->name('announcement.reservations');
     Route::post('/auth/logout',[RegisteredUserController::class,'logout'])->name("logout");
-    Route::get('/home',[RegisteredUserController::class,'home'])->name("home");
 
 
 
 
 });
+Route::get('/home',[RegisteredUserController::class,'home'])->name("home");
 
 Route::get('/auth/google',[SocialiteController::class,'redirectToGoogle'])->name('loginWithGoogle');
 Route::get('auth/google/callback',[SocialiteController::class,'handleGoogleCallback']);

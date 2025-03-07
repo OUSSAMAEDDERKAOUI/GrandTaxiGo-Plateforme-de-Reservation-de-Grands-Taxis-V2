@@ -32,14 +32,17 @@ class SocialiteController extends Controller
             } else {
 
 
+               
                 $newUser = User::create([
-                    'name' => $user->f_nam,
+                    'f_name' => $user->user['given_name'],
+                    'l_name' => $user->user['family_name'],
+                    'location'=>'Aucune adresse',
                     'email' => $user->email,
                     'social_id' => $user->id,
-                    'social_type' => 'google',
-                    'password' => Hash::make('my-google')
+                    'profile_picture' => $user->avatar,
+                    'password' => Hash::make('oussama98@'),
                 ]);
-
+// dd($user);
                 Auth::login($newUser);
                 return response()->json($newUser);
             }
