@@ -31,5 +31,21 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
-   
+    public function deleteUser($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->back();
+    }
+    public function viewTrajets()
+    {
+
+        $announcements = Announcement::with('driver')->get();
+        // dd($announcements);
+        return view('admin.trajets', compact('announcements'));
+    }
+  
+
+
+
 }
